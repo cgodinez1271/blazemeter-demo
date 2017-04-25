@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export BZA=https://a.blazemeter.com
-export BZA_API_KEY=e7d12bxrmq8rpqifveej
-export TEST_ID=5384621
+export BZA_API_KEY="api-user-key"
+export TEST_ID="test-id"
 
 echo "Running test on " $BZA
 echo "Test ID = " $TEST_ID
