@@ -7,16 +7,16 @@ export USER="d8b2950468ff21a4df902f3f:6da71a14ebdc612cb7405eac184c9958d1f6d8c384
 echo "Running test on " $BZA
 echo "Test ID = " $TEST_ID
 
-SESSION_ID=$(curl --silent --insecure --user ${USER} ${BZA}/api/latest/tests/${TEST_ID}/start | jq '.result.sessionsId[]' | tr -d \")
+SESSION_ID=$(curl --silent --insecure --user ${USER} ${BZA}/api/latest/tests/${TEST_ID}/start |  python -c 'import sys, json; print json.load(sys.stdin)["result"]["sessionsId"]' | tr -d \'[u])
 echo "Test started .."
 
-TEST_RUN_STATUS=$(curl --silent --insecure --user ${USER} ${BZA}/api/latest/sessions/${SESSION_ID} | jq '.result.status' | tr -d \" )
+TEST_RUN_STATUS=$(curl --silent --insecure --user ${USER} ${BZA}/api/latest/sessions/${SESSION_ID} | python -c 'import sys, json; print json.load(sys.stdin)["result"]["status"]' | tr -d \'[u] )
 
 while [ "$TEST_RUN_STATUS" != "ENDED" ]; do
         echo "Test status = " $TEST_RUN_STATUS
         echo "Report is visible here: ${BZA}/app/#reports/${SESSION_ID}/loadreport"
         sleep 30
-	TEST_RUN_STATUS=$(curl --silent --insecure --user ${USER} ${BZA}/api/latest/sessions/${SESSION_ID} | jq '.result.status' | tr -d \" )
+	TEST_RUN_STATUS=$(curl --silent --insecure --user ${USER} ${BZA}/api/latest/sessions/${SESSION_ID} | python -c 'import sys, json; print json.load(sys.stdin)["result"]["status"]' | tr -d \'[u]  )
 done
 
 
